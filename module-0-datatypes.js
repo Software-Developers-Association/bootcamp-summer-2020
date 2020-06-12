@@ -145,3 +145,21 @@ for(let i = 0; i < setA.length; ++i) {
 }
 
 console.log(output);
+
+let employees = [ kevin, bobDylan ];
+
+employees.push(createEmployee("John", "Doe", 10));
+
+let jane = createEmployee("Jane", "Doe", 20);
+
+employees.push(jane);
+
+let bob = createEmployee("Bob", "Builder", 20);
+
+employees.push(bob);
+
+for(let i = 0; i < employees.length; ++i) {
+    let employee = employees[i];
+
+    printEmployee(employee);
+}
