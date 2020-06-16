@@ -135,54 +135,193 @@
 // console.log(a);
 
 // ========== Array Methods
-let setA = [1, 2, 3, 4, 5];
+// let setA = [1, 2, 3, 4, 5];
 
-console.log(setA);
+// console.log(setA);
 
-// push(item) - Appends an item to the end of the array...
-console.log(`Before Length ${setA.length}, After Length ${setA.push(6)}, elements ${setA}`);
+// // push(item) - Appends an item to the end of the array...
+// console.log(`Before Length ${setA.length}, After Length ${setA.push(6)}, elements ${setA}`);
 
-// pop() - Removes the last item in the array, and returns that element.
-let lastItem = setA.pop();
+// // pop() - Removes the last item in the array, and returns that element.
+// let lastItem = setA.pop();
 
-console.log(`The last item removed was ${lastItem}, elements ${setA}`);
+// console.log(`The last item removed was ${lastItem}, elements ${setA}`);
 
-// shift() - Removes the first item in the array, and returns that element.
-let firstItem = setA.shift();
+// // shift() - Removes the first item in the array, and returns that element.
+// let firstItem = setA.shift();
 
-console.log(`The first item removed was ${firstItem}, elements ${setA}`);
+// console.log(`The first item removed was ${firstItem}, elements ${setA}`);
 
-// unshift(item) - Prepends an item to the start of the array...
-console.log(`Before Length ${setA.length}, After Length ${setA.unshift(10, 11, 12)}, elements ${setA}`);
+// // unshift(item) - Prepends an item to the start of the array...
+// console.log(`Before Length ${setA.length}, After Length ${setA.unshift(10, 11, 12)}, elements ${setA}`);
 
-// reverse() (in-place) - Reverses the order of the elements in the original array.
-setA.reverse();
+// // reverse() (in-place) - Reverses the order of the elements in the original array.
+// setA.reverse();
 
-console.log(setA);
+// console.log(setA);
 
-// reduce() - Allows you to iterate through an array and keep a running total.
-function reducer(total, value) {
-    return total + value;
+// // reduce() - Allows you to iterate through an array and keep a running total.
+// function reducer(total, value) {
+//     return total + value;
+// }
+
+// let resultA = setA.reduce(reducer);
+
+// console.log(resultA);
+
+// let resultB = setA.reduce(
+//     function(total, value) {
+//         return total + value;
+//     });
+
+// console.log(resultB);
+
+// // ES6
+// let resultC = setA.reduce(
+//     (total, value) => {
+//         return total + value;
+//     }
+// );
+
+// console.log(resultC);
+
+// map()
+let domain = [1, 2, 3, 4, 5];
+
+// f(x) = x^2 + x - 1
+
+function f(x) {
+    return -x;
 }
 
-let resultA = setA.reduce(reducer);
+let resultA = domain.map(f);
 
-console.log(resultA);
+//console.log(domain);
 
-let resultB = setA.reduce(
-    function(total, value) {
-        return total + value;
-    });
+//console.log(resultA);
 
-console.log(resultB);
-
-// ES6
-let resultC = setA.reduce(
-    (total, value) => {
-        return total + value;
+let resultB = domain.map(
+    function(x) {
+        return -x;
     }
 );
 
-console.log(resultC);
+//console.log(resultB);
 
-// map()
+// ES6
+let resultC = domain.map(
+    (x) => {
+        return -x;
+    }
+);
+
+//console.log(resultC);
+
+// Domain { 1,2,3,4,5 } Codomain {-1, -2, -3, -4, -5}
+// f: D -> C, f(x) 'map function' is f(x)=-x
+
+let employees = [
+    {
+        name: "Kevin",
+        eid: 12345
+    },
+    {
+        name: "Bob",
+        eid: 4321
+    },
+    {
+        name: "Jane",
+        eid: 1928
+    },
+    {
+        name: "Alice",
+        eid: 7483
+    }
+];
+
+// slow way...
+let e1 = `<li>${employees[0].name}</li>`;
+let e2 = `<li>${employees[1].name}</li>`;
+
+let html =
+`<ul>
+    ${e1}
+    ${e2}
+</ul>`;
+
+//console.log(html);
+
+// Faster way...
+function employeeToListItem(employee) {
+    return `<li>${employee.name}</li>`;
+}
+
+//let htmlListItems = employees.map(employeeToListItem);
+
+// let htmlListItems = employees.map(
+//     function(employee) {
+//         return `<li>${employee.name}</li>`;
+//     }
+// );
+
+let htmlListItems = employees.map(
+    (employee) => {
+        return `<li>${employee.name}</li>`;
+    }
+);
+
+let reduced = htmlListItems.reduce(
+    (acc, value) => {
+        return acc + value;
+    }
+);
+
+let unorderedListResult =
+`
+<ul>
+${
+    employees
+    .map( // Map the employee data, into an array of HTML strings.
+        (employee) => {
+            return `<li>${employee.name}</li>`;
+        }
+    )
+    .reduce( // Reduce the HTML string array into a single html string.
+        (acc, value) => {
+            return acc + "\n" + value;
+        }
+    )
+}
+</ul>
+`;
+
+console.log(unorderedListResult);
+
+// Mini-Assignment - Use the map function map the employees array and display it
+// using an unordered list.
+// Then take that same data, and display it using a Table with 1 column.
+
+// W3C (https://www.w3schools.com/jsref/jsref_map.asp)
+// W3C (https://www.w3schools.com/html/html_tables.asp)
+// W3C (https://www.w3schools.com/html/html_lists.asp)
+
+/*
+let employees = [
+    {
+        name: "Kevin",
+        eid: 12345
+    },
+    {
+        name: "Bob",
+        eid: 4321
+    },
+    {
+        name: "Jane",
+        eid: 1928
+    },
+    {
+        name: "Alice",
+        eid: 7483
+    }
+];
+*/
