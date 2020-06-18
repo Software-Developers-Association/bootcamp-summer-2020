@@ -305,6 +305,61 @@ console.log(unorderedListResult);
 // W3C (https://www.w3schools.com/html/html_tables.asp)
 // W3C (https://www.w3schools.com/html/html_lists.asp)
 
+let eListItems = employees.map(
+    // e is the employee
+    (e) => {
+        return `<li>${e.name}</li>`;
+    }
+);
+
+let eUnorderedList =
+`
+<ul>
+${eListItems.reduce(
+    (previousValue, currentValue) => {
+        return previousValue + "\n" + currentValue;
+    }
+)}
+</ul>
+`;
+
+console.log(eUnorderedList);
+
+let eRows = employees.map(
+    (e) => {
+        return `
+        <tr>
+            <td>
+            ${e.eid}
+            </td>
+            <td>
+            ${e.name}
+            </td>
+        </tr>`;
+    }
+);
+
+let eTable = 
+`
+<table>
+<tr>
+<th>
+EID
+</th>
+<th>
+Name
+</th>
+</tr>
+${eRows.reduce(
+    (finalStr, row) => {
+        return finalStr + "\n" + row;
+    }
+)}
+</table>
+`;
+
+console.log(eTable);
+
 /*
 let employees = [
     {
