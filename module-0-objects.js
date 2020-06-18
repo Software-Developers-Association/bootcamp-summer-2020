@@ -113,4 +113,62 @@ tom.purr2();
     - describe, "My name is NAME and I am a POSITION"
 */
 
+// function Employee(name, id, salary, position) {
+//     this.name = name;
+//     this.id = id;
+//     this.salary = salary;
+//     this.position = position;
+
+//     // functional way - Anonymous function
+//     this.greet = function() {
+//         console.log(`Hi, my name is ${this.name}`);
+//     };
+
+//     // lambda way - Lambda Expression
+//     this.print = () => {
+//         console.log(`Name: ${this.name} ID: ${this.id} Salary: ${this.salary}`);
+//     };
+// }
+
+// // Prototype to inject a new method.
+// Employee.prototype.describe = function() {
+//     console.log(`My name is ${this.name} and I am a ${this.position}`);
+// };
+
+// let kevin = new Employee("Kevin", 12345, 10, "Sales Associate");
+// kevin.greet();
+// kevin.describe();
+// kevin.print();
+
 /* class - ES6 */
+class Employee {
+    constructor(name, id, salary, position) {
+        this.name = name;
+        this.id = id;
+        this.salary = salary;
+        this.position = position;
+    }
+
+    greet() {
+        console.log(`Hi, my name is ${this.name}`);
+    }
+
+    print() {
+        console.log(`Name: ${this.name} ID: ${this.id} Salary: ${this.salary}`);
+    }
+}
+
+let john = new Employee("Kevin", 12345, 10, "Sales Associate");
+
+john.print();
+
+/*
+Mini-Assigment:
+Create a class using the 'class' keyword.
+Have at least 2 attributes. 2 methods.
+
+Each method should display the attribute (use the 'this' keyword)
+
+Create an array that has mulitple instances of your class, and use the map and reduce to
+display them in a HTML table. Include a header using the <th> tag.
+*/
