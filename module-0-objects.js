@@ -172,3 +172,39 @@ Each method should display the attribute (use the 'this' keyword)
 Create an array that has mulitple instances of your class, and use the map and reduce to
 display them in a HTML table. Include a header using the <th> tag.
 */
+
+class Car {
+    constructor(make, model) {
+        this.make = make;
+        this.model = model;
+    }
+
+    print() {
+        console.log(`Make: ${this.make} Model: ${this.model}`);
+    }
+
+    sound() {
+        console.log("*engine noises*");
+    }
+}
+
+let cars = [
+    new Car("Dodge", "Avenger SKT"),
+    new Car("Ford", "Mustang"),
+    new Car("Toyota", "Camry")
+];
+
+let table_contents = cars
+.map(
+    function(car) {
+        return `<tr><td>${car.make}</td><td>${car.model}</td></tr>`;
+    })
+.reduce(
+    (acc, row) => {
+        return acc + "<br />" + row;
+    }
+);
+
+let table = `<table><tr><th>Make</th><th>Model</th>${table_contents}</tr></table>`;
+
+console.log(table);
