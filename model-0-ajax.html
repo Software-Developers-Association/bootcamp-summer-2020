@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX</title>
+</head>
+<body>
+    <input id="search" type="text" />
+    <button id="click_me">Click Me</button>
+    <div id="root">
+        
+    </div>
+
+    <script>
+        // JavaScript code here...
+        let clickMe = document.getElementById("click_me");
+
+        clickMe.addEventListener('click',
+        function(ev) {
+            let xhr = new XMLHttpRequest();
+
+            xhr.onload = function(ev) {
+                let json = JSON.parse(this.responseText);
+
+                let rows = json.results.map(
+                    (result) => {
+                        return (
+                            `<tr>
+                                <td>
+                                    <image src="${result.artworkUrl100}" />
+                                </td>
+                                <td>
+                                    <label>${result.trackName}</label>
+                                </td>
+                                <td>
+                                    <p>${result.hasOwnProperty("shortDescription") ? result.shortDescription : result.longDescription}</p>
+                                </td>
+                            </tr>`);
+                    }
+                );
+
+                let rowsAsStr = rows.reduce(
+                    (acc, value) => {
+                        return acc + "\n" + value;
+                    }
+                );
+
+                let table = `
+                <table>
+                    <tr>
+                        <th>Art Work</th>
+                        <th>Label</th>
+                        <th>Short Description</th>
+                    </tr>
+                    ${rowsAsStr}
+                </table>`;
+
+                let root = document.getElementById("root");
+
+                root.innerHTML = table;
+            };
+
+            let search = document.getElementById("search")
+
+            xhr.open("GET", `https://itunes.apple.com/search?term=${encodeURI(search.value)}`, true);
+
+            xhr.send();
+        });
+    </script>
+</body>
+</html>
