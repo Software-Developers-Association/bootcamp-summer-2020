@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Facts</title>
+</head>
+<body>
+    <button id="tuna">Get Cat Fact</button>
+    <div id="generated"></div>
+    <script>
+        function showCatFacts(facts) {
+            let generated = document.getElementById("generated");
+
+            let all = facts.all;
+
+            let htmlListItems = all
+            .map(
+                (e) => {
+                    return `<li>${e.text}</li>`;
+                })
+            .reduce(
+                (acc, value) => {
+                    return acc + "\n" + value
+                });
+            
+            let unorderedHTML = `<ul>${htmlListItems}</ul>`;
+
+            generated.innerHTML = unorderedHTML;
+        }
+
+        let tuna = document.getElementById("tuna");
+
+        tuna.addEventListener(
+            'click',
+            function(ev) {
+                fetch("https://cat-fact.herokuapp.com/facts")
+                .then(response => response.json())
+                .then(json => {
+                    showCatFacts(json);
+                })
+                .catch(reason => {
+                    console.log(reason);
+                })
+            });
+    </script>
+</body>
+</html>

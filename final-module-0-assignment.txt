@@ -1,0 +1,5 @@
+Easy: Display a random fox using the fox API (https://randomfox.ca/floof/) HINT: (https://www.w3schools.com/html/html_images.asp)
+
+Medium: Display a random joke using the joke API (https://github.com/15Dkatz/official_joke_api) make the setup regular font stype, make the punch line italic HINT: (https://www.w3schools.com/html/html_formatting.asp)
+
+Hard: Display the classes as a unordered list, display the name as a button, when the user clicks on the button display the PROFECENCIES as an unordered list for that class. (http://www.dnd5eapi.co/)
