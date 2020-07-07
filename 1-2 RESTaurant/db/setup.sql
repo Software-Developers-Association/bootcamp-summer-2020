@@ -35,10 +35,23 @@ CREATE TABLE posts
 -- to refer to later.
 -- Ensure both user_id and post_id are FOREIGN KEYs that reference
 -- the `users` and `posts` tables respectively.
-CREATE TABLE bookmarks
+CREATE TABLE IF NOT EXISTS bookmarks
 (
     user_id INT UNSIGNED,
     post_id INT UNSIGNED,
     FOREIGN KEY(user_id) REFERENCES users(user_id),
     FOREIGN KEY(post_id) REFERENCES posts(post_id)
+);
+
+-- Create the likes table, this will be used to keep track
+-- of the likes on posts made by a user.
+-- Ensure both post_id and user_id are FOREIGN KEYs that reference
+-- the `posts` and `users` tables respectively.
+CREATE TABLE IF NOT EXISTS likes
+(
+    post_id INT UNSIGNED,
+    user_id INT UNSIGNED,
+    state TINYINT(1) UNSIGNED NOT NULL,
+    FOREIGN KEY(post_id) REFERENCES posts(post_id),
+    FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
