@@ -6,19 +6,26 @@ CREATE DATABASE IF NOT EXISTS restaurant;
 USE restaurant;
 
 -- Create the Users table
-CREATE TABLE users
+CREATE TABLE TABLE IF NOT EXISTS users
 (
     user_id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    fname VARCHAR(50),
-    lname VARCHAR(50),
-    email VARCHAR(50),
-    username VARCHAR(50),
-    password VARCHAR(50)
+    fname VARCHAR(50) NOT NULL,
+    lname VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    UNIQUE (email),
+    UNIQUE (username),
+    CHECK (fname <> ''),
+    CHECK (lname <> ''),
+    CHECK (email <> ''),
+    CHECK (username <> ''),
+    CHECK (password <> '')
 );
 
 -- Create the Posts table, ensure we have a FOREIGN KEY
 -- on user_id that references the `users` table
-CREATE TABLE posts
+CREATE TABLE IF NOT EXISTS posts
 (
     post_id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
     user_id INT UNSIGNED,

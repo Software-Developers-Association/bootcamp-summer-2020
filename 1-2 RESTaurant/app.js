@@ -47,11 +47,18 @@ function createTableUsers() {
     `CREATE TABLE IF NOT EXISTS users
     (
         user_id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-        fname VARCHAR(50),
-        lname VARCHAR(50),
-        email VARCHAR(50),
-        username VARCHAR(50),
-        password VARCHAR(50)
+        fname VARCHAR(50) NOT NULL,
+        lname VARCHAR(50) NOT NULL,
+        email VARCHAR(50) NOT NULL,
+        username VARCHAR(50) NOT NULL,
+        password VARCHAR(50) NOT NULL,
+        UNIQUE (email),
+        UNIQUE (username),
+        CHECK (fname <> ''),
+        CHECK (lname <> ''),
+        CHECK (email <> ''),
+        CHECK (username <> ''),
+        CHECK (password <> '')
     );`;
 
     connection.query(sql, (err, results, fields) => {
@@ -122,3 +129,112 @@ function createTableLikes() {
         console.log(`LIKES table created (if not exists)...`);
     });
 }
+
+/**
+ * Write the express code required to
+ * start building up our API.
+ * 
+ * Once you have the boilerplate code done,
+ * create 1 express GET endpoint and have the
+ * route be /users.
+ */
+
+ // Import the express module...
+ const express = require('express');
+ // Create our express application object
+ // call it 'app' (not a required name...just what people name it...)
+ const app = express();
+ // Import Joi for JSON body validation.
+ const Joi = require('joi');
+ // Configure the port for the Node.js express server
+ // to listen on...
+ const port = process.env.PORT || 3000;
+
+ // Ensure JSON will be parsed for the
+ // req body. To do this, we will use some
+ // middleware that is built into express
+ app.use(express.json());
+
+ // Register a GET request with the
+ // /users route handler.
+ app.get('/users', (req, res) => {
+     res.json(
+         {
+             message: 'Hello, World!'
+         }
+     );
+ });
+
+ app.post('/users', (req, res) => {
+     const schema = {
+         fname: Joi.string().required(),
+         lname: Joi.string().required(),
+         email: Joi.string().required(),
+         username: Joi.string().required(),
+         password: Joi.string().required()
+     };
+
+     const validation = Joi.validate(req.body, schema);
+
+     if(validation.error) {
+         const result = {
+             message: validation.error.message,
+             code: res.statusCode = 400
+         };
+         
+         return res.json(result);
+     }
+
+     const sql =
+     `INSERT INTO users
+     (
+         fname,
+         lname,
+         email,
+         username,
+         password
+     )
+     VALUES
+     (
+         '${req.body.fname}',
+         '${req.body.lname}',
+         '${req.body.email}',
+         '${req.body.username}',
+         '${req.body.password}'
+     )`;
+
+
+     connection.query(sql, (err, results, fields) => {
+         if(err) {
+             return res.json(
+                 {
+                     message: err.message,
+                     code: res.statusCode = 400
+                 }
+             );
+         }
+
+         const sql = `SELECT user_id, fname, lname, email, username FROM users WHERE username='${req.body.username}';`;
+
+         connection.query(sql, (err, results, fields) => {
+             if(err) {
+                 return res.json(
+                     {
+                         message: err.message,
+                         code: res.statusCode = 500
+                     }
+                 );
+             }
+
+             return res.json({
+                 message: 'User added.',
+                 code: res.statusCode = 200,
+                 user: results[0]
+             });
+         });
+     });
+ });
+
+ app.listen(port, () => {
+     console.log(`Listening on port ${port}`);
+ });
