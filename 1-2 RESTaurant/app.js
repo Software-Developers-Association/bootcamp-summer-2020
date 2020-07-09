@@ -72,17 +72,19 @@ function createTableUsers() {
 
 function createTablePosts() {
     const sql =
-    ` CREATE TABLE IF NOT EXISTS posts
+    `CREATE TABLE IF NOT EXISTS posts
     (
         post_id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-        user_id INT UNSIGNED,
+        user_id INT UNSIGNED NOT NULL,
         caption VARCHAR(255),
-        image_url VARCHAR(255),
-        likes INT UNSIGNED,
-        dislikes INT UNSIGNED,
+        image_url VARCHAR(255) NOT NULL,
+        likes INT UNSIGNED NOT NULL,
+        dislikes INT UNSIGNED NOT NULL,
         location VARCHAR(50),
-        FOREIGN KEY(user_id) REFERENCES users(user_id)
-    )`;
+        FOREIGN KEY(user_id) REFERENCES users(user_id),
+        CHECK (user_id <> 0),
+        CHECK (image_url <> '')
+    );`;
 
     connection.query(sql, (err, results, fields) => {
         if(err) throw err;
@@ -146,14 +148,33 @@ function createTableLikes() {
  const app = express();
  // Import Joi for JSON body validation.
  const Joi = require('joi');
+
+ const url = require('url');
+
  // Configure the port for the Node.js express server
  // to listen on...
  const port = process.env.PORT || 3000;
+ const multer = require('multer');
+ const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'images/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now().toString() + "." + file.mimetype.split('/')[1]);
+    }
+});
+ const upload = multer({
+     storage: storage
+ });
 
  // Ensure JSON will be parsed for the
  // req body. To do this, we will use some
  // middleware that is built into express
  app.use(express.json());
+
+ // Register with express, static files location
+ // as to not treat it as a regualar route...
+ app.use('/static/images', express.static(__dirname + "/images"));
 
  // Register a GET request with the
  // /users route handler.
@@ -231,6 +252,81 @@ function createTableLikes() {
                  code: res.statusCode = 200,
                  user: results[0]
              });
+         });
+     });
+ });
+
+ app.post('/posts', upload.single('image'), (req, res) => {
+     const schema = {
+         user_id: Joi.number().required(),
+         caption: Joi.string().optional()
+     };
+
+     const validation = Joi.validate(req.body, schema);
+
+     if(validation.error) {
+         return res.json({
+             message: validation.error.message,
+             code: res.statusCode = 400
+         });
+     }
+
+     const image_url = req.protocol + "://" + req.headers.host + "/static/images/" + req.file.filename;
+
+     const sql =
+     `
+     INSERT INTO posts (user_id, caption, image_url) VALUES (${req.body.user_id}, '${req.body.caption}', '${image_url}');
+     `;
+
+     connection.query(sql, (err, results, fields) => {
+         if(err)
+            return res.json({
+             message: err.message,
+             code: res.statusCode = 400
+         });
+
+         res.json({
+             message: 'Post Uploaded',
+             code: res.statusCode = 200
+         });
+     });
+ });
+
+ app.get('/posts', (req, res) => {
+     const parsedUrl = url.parse(req.url, true);
+
+     const schema = {
+         post_id: Joi.number().required()
+     }
+
+     const validation = Joi.validate(parsedUrl.query, schema);
+
+     if(validation.error) {
+         return res.json({
+             message: validation.error.message,
+             code: res.statusCode = 400
+         });
+     }
+
+     const post_id = Number.parseInt(parsedUrl.query.post_id);
+
+     const sql =
+     `SELECT user_id, caption, image_url, likes, dislikes, location FROM posts WHERE post_id=${post_id}`;
+
+     connection.query(sql, (err, results, fields) => {
+         if(err) {
+             return res.json({
+                 message: err.message,
+                 code: res.statusCode = 400
+             });
+         }
+
+         const post = results[0];
+
+         return res.json({
+             message: 'OK',
+             code: res.statusCode = 200,
+             post: post
          });
      });
  });

@@ -28,13 +28,15 @@ CREATE TABLE TABLE IF NOT EXISTS users
 CREATE TABLE IF NOT EXISTS posts
 (
     post_id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    user_id INT UNSIGNED,
+    user_id INT UNSIGNED NOT NULL,
     caption VARCHAR(255),
-    image_url VARCHAR(255),
-    likes INT UNSIGNED,
-    dislikes INT UNSIGNED,
+    image_url VARCHAR(255) NOT NULL,
+    likes INT UNSIGNED NOT NULL,
+    dislikes INT UNSIGNED NOT NULL,
     location VARCHAR(50),
-    FOREIGN KEY(user_id) REFERENCES users(user_id)
+    FOREIGN KEY(user_id) REFERENCES users(user_id),
+    CHECK (user_id <> 0),
+    CHECK (image_url <> '')
 );
 
 -- Create the bookmarks table, this will be used to keep track
