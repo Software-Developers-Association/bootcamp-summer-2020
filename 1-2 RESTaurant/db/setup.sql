@@ -61,8 +61,54 @@ CREATE TABLE IF NOT EXISTS likes
 (
     post_id INT UNSIGNED NOT NULL,
     user_id INT UNSIGNED NOT NULL,
-    state TINYINT(1) UNSIGNED NOT NULL,
+    reaction TINYINT(1) UNSIGNED NOT NULL,
     FOREIGN KEY(post_id) REFERENCES posts(post_id),
     FOREIGN KEY(user_id) REFERENCES users(user_id),
     PRIMARY KEY (post_id, user_id)
 );
+
+DELIMITER //
+CREATE TRIGGER tr_ins_likes
+AFTER INSERT
+ON likes FOR EACH ROW
+BEGIN
+	IF (NEW.reaction=0) THEN
+    	UPDATE posts SET dislikes=dislikes + 1 WHERE post_id=NEW.post_id;
+    ELSEIF (NEW.reaction=1) THEN
+    	UPDATE posts SET likes=likes + 1 WHERE post_id=NEW.post_id;
+    END IF;
+END; //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER tr_up_likes
+AFTER UPDATE
+ON likes FOR EACH ROW
+BEGIN
+	-- Check if the previous reaction was a dislike,
+    -- if so decrement the dislike and increment the likes + 1
+	IF (OLD.reaction=0) THEN
+    	UPDATE posts SET dislikes=dislikes - 1, likes=likes + 1 WHERE post_id=OLD.post_id;
+    -- Check if the previsou reaction was a like,
+    -- if so decrement the likes and increment the dislike + 1
+    ELSEIF (OLD.reaction=1) THEN
+    	UPDATE posts SET likes=likes - 1, dislikes=dislikes + 1 WHERE post_id=OLD.post_id;
+    END IF;
+END; //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER tr_del_likes
+AFTER DELETE ON likes FOR EACH ROW
+BEGIN
+	-- Check if the previous reaction was a dislike,
+    -- if so, remove their dislike from the post.
+	IF (OLD.reaction=0) THEN
+    	UPDATE posts SET dislikes=dislikes-1 WHERE post_id=OLD.post_id;
+    -- Check if the previous reaction was a like,
+    -- if so, remove their like from the post.
+    ELSEIF (OLD.reaction=1) THEN
+    	UPDATE posts SET likes=likes-1 WHERE post_id=OLD.post_id;
+    END IF;
+END; //
+DELIMITER ;

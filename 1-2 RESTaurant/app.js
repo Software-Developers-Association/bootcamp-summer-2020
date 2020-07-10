@@ -425,8 +425,87 @@ function createTableLikes() {
          });
  });
 
+ /**
+  * reaction
+  * -1 = delete the reaction (neither a dislike nor a like it is nothing....)
+  * 0 = dislike,
+  * 1 = like,
+  * 2 = heart,
+  * 3 = vomit
+  */
+
  app.post('/likes', (req, res) => {
-     
+     const schema = {
+         post_id: Joi.number().required(),
+         user_id: Joi.number().required(),
+         reaction: Joi.number().required()
+     };
+
+     const validation = Joi.validate(req.body, schema);
+
+     if(validation.error) {
+         return res.json({
+             message: validation.error.message,
+             code: res.statusCode = 400
+         });
+     }
+
+     // Check if the post_id exists...
+     connection.query(
+         `SELECT post_id FROM posts WHERE post_id=${req.body.post_id}`,
+         (err, results, fields) => {
+             if(err) {
+                 return res.json({
+                     message: err.message,
+                     code: res.statusCode = 500
+                 });
+             }
+
+             if(results.length == 0) {
+                return res.json({
+                    message: `Post ID ${req.body.post_id} does not exist.`,
+                    code: res.statusCode = 400
+                });
+             }
+
+             connection.query(
+                 `SELECT user_id FROM users WHERE user_id=${req.body.user_id}`,
+                 (err, results, fields) => {
+                     if(err) {
+                         return res.json({
+                             message: err.message,
+                             code: res.statusCode = 500
+                         });
+                     }
+
+                     if(results.length == 0) {
+                        return res.json({
+                            message: `User ID ${req.body.user_id} does not exist.`,
+                            code: res.statusCode = 400
+                        });
+                     }
+
+                     const sql =
+                     `INSERT INTO likes (post_id, user_id, reaction)
+                     VALUES
+                     (${req.body.post_id}, ${req.body.user_id}, ${req.body.reaction})`;
+
+                     connection.query(sql, (err, results, fields) => {
+                         if(err) {
+                             return res.json({
+                                 message: err.message,
+                                 code: res.statusCode = 500
+                             });
+                         }
+
+                         res.json({
+                             message: 'OK',
+                             code: res.statusCode = 200
+                         });
+                     });
+                 }
+             )
+         });
  });
 
  app.listen(port, () => {
