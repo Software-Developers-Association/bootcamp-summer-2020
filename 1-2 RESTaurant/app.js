@@ -99,10 +99,11 @@ function createTableBookmarks() {
     const sql =
     `CREATE TABLE IF NOT EXISTS bookmarks
     (
-        user_id INT UNSIGNED,
-        post_id INT UNSIGNED,
+        user_id INT UNSIGNED NOT NULL,
+        post_id INT UNSIGNED NOT NULL,
         FOREIGN KEY(user_id) REFERENCES users(user_id),
-        FOREIGN KEY(post_id) REFERENCES posts(post_id)
+        FOREIGN KEY(post_id) REFERENCES posts(post_id),
+        PRIMARY KEY(user_id, post_id)
     );`;
 
     connection.query(sql, (err, results, fields) => {
@@ -118,11 +119,12 @@ function createTableLikes() {
     const sql = 
     `CREATE TABLE IF NOT EXISTS likes
     (
-        post_id INT UNSIGNED,
-        user_id INT UNSIGNED,
+        post_id INT UNSIGNED NOT NULL,
+        user_id INT UNSIGNED NOT NULL,
         state TINYINT(1) UNSIGNED NOT NULL,
         FOREIGN KEY(post_id) REFERENCES posts(post_id),
-        FOREIGN KEY(user_id) REFERENCES users(user_id)
+        FOREIGN KEY(user_id) REFERENCES users(user_id),
+        PRIMARY KEY (post_id, user_id)
     );`;
 
     connection.query(sql, (err, results, fields) => {
@@ -329,6 +331,102 @@ function createTableLikes() {
              post: post
          });
      });
+ });
+
+ app.post('/bookmarks', (req, res) => {
+     const schema = {
+         user_id: Joi.number().required(),
+         post_id: Joi.number().required()
+     };
+
+     const validation = Joi.validate(req.body, schema);
+
+     if(validation.error) {
+         return res.json({
+             message: validation.error.message,
+             code: res.statusCode = 400
+         });
+     }
+
+     const sql = `INSERT INTO bookmarks (user_id, post_id) VALUES (${req.body.user_id}, ${req.body.post_id})`;
+
+     connection.query(sql, (err, results, fields) => {
+         if(err) {
+             return res.json({
+                 message: err.message,
+                 code: res.statusCode = 400
+             });
+         }
+
+         console.log(results);
+         console.log(fields);
+
+         res.json({
+             message: `Created bookmark`,
+             code: res.statusCode = 200
+         });
+     });
+ });
+
+ app.get('/bookmarks', (req, res) => {
+     const schema = {
+         user_id: Joi.number().required()
+     };
+
+     const parsedUrl = url.parse(req.url, true);
+
+     const validation = Joi.validate(parsedUrl.query, schema);
+
+     if(validation.error) {
+         return res.json({
+             message: validation.error.message,
+             code: res.statusCode = 400
+         });
+     }
+
+     connection.query(
+         `SELECT user_id FROM users WHERE user_id=${parsedUrl.query.user_id}`,
+         (err, results, fields) => {
+             if(err) {
+                 return res.json({
+                     message: err.message,
+                     code: res.statusCode = 500
+                 });
+             }
+
+             if(results.length == 0) {
+                 return res.json({
+                     message: `User with user_id ${parsedUrl.query.user_id} does not exist.`,
+                     code: res.statusCode = 400
+                 });
+             }
+
+             const sql = `SELECT post_id FROM bookmarks WHERE user_id=${parsedUrl.query.user_id}`;
+
+             connection.query(sql, (err, results, fields) => {
+                 if(err) {
+                     return res.json({
+                         message: err.message,
+                         code: res.statusCode = 400
+                     });
+                 }
+        
+                 console.log(results);
+                 console.log(fields);
+        
+                 res.json({
+                     message: 'OK',
+                     code: res.statusCode = 200,
+                     posts: results.map((row) => {
+                         return row.post_id
+                     })
+                 });
+             });
+         });
+ });
+
+ app.post('/likes', (req, res) => {
+     
  });
 
  app.listen(port, () => {

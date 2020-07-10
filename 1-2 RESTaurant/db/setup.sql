@@ -46,10 +46,11 @@ CREATE TABLE IF NOT EXISTS posts
 -- the `users` and `posts` tables respectively.
 CREATE TABLE IF NOT EXISTS bookmarks
 (
-    user_id INT UNSIGNED,
-    post_id INT UNSIGNED,
+    user_id INT UNSIGNED NOT NULL,
+    post_id INT UNSIGNED NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(user_id),
-    FOREIGN KEY(post_id) REFERENCES posts(post_id)
+    FOREIGN KEY(post_id) REFERENCES posts(post_id),
+    PRIMARY KEY(user_id, post_id)
 );
 
 -- Create the likes table, this will be used to keep track
@@ -58,9 +59,10 @@ CREATE TABLE IF NOT EXISTS bookmarks
 -- the `posts` and `users` tables respectively.
 CREATE TABLE IF NOT EXISTS likes
 (
-    post_id INT UNSIGNED,
-    user_id INT UNSIGNED,
+    post_id INT UNSIGNED NOT NULL,
+    user_id INT UNSIGNED NOT NULL,
     state TINYINT(1) UNSIGNED NOT NULL,
     FOREIGN KEY(post_id) REFERENCES posts(post_id),
-    FOREIGN KEY(user_id) REFERENCES users(user_id)
+    FOREIGN KEY(user_id) REFERENCES users(user_id),
+    PRIMARY KEY (post_id, user_id)
 );
