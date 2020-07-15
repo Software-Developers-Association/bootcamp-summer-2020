@@ -1,0 +1,68 @@
+# To login run...
+
+mysql -u YOUR_USERNAME -p (-p is to prompt for a password, else it will use an empty password)
+
+Example:
+    > mysql -u root
+
+# To show the databases...
+    > SHOW DATABASES;
+
+# To load/use a particular databases...
+    > USE NAME_OF_DATABASE;
+
+# To show the tables...
+    > SHOW TABLES;
+
+# To describe a table...
+    > DESC NAME_OF_TABLE;
+
+# To create a databases...
+    > CREATE DATABASE NAME_OF_DATABASE;
+
+# To create a table...
+    > CREATE TABLE name_of_table (col..., col..., col...);
+
+# To insert into a table...
+    > INSERT INTO name_of_table (col.., col...) VALUES (val..., val...);
+
+# Change a column...
+    > ALTER TABLE name_of_table MODIY col...;
+
+# To show the values of a table..
+    > SELECT * FROM name_of_table;
+
+# To show specific columns in the report...
+    > SELECT col.., col.., FROM name_of_table;
+
+# To show rows with a specific condition...
+    > SELECT * FROM name_of_table WHERE condition...;
+
+# To edit the data in all rows...WARNING!!!
+    > UPDATE name_of_table SET col...=val..., col...=val...;
+
+# To edit the data of a specific set of rows...
+    > UPDATE name_of_table SET col...=val..., col...=val... WHERE condition...;
+
+
+# To show triggers...
+    > SHOW TRIGGERS;
+
+# To create a trigger...
+    Steps:
+    1.) Change the delimiter
+    > DELIMITER SOME_SYMBOL
+    Example
+    > DELIMITER //
+    2.) Create the trigger...
+    > CREATE TRIGGER name_of_trigger
+    3.) Specify WHEN to exectute the trigger...
+    > (BEFORE | AFTER) (INSERT | UPDATE | DELETE)
+    4.) Specify the table..
+    > ON name_of_table FOR EACH ROW
+    5.) The body of statements to be executed...
+    > SOME STATEMENTS HERE...
+    6.) End it with a semicolon...
+    > ;
+    7.) Reset the DELIMITER
+    > DELIMITER ;
