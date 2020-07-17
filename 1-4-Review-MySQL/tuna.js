@@ -4,6 +4,7 @@ const express = require('express');
 const Joi = require('joi');
 // 'import' the mysql.js module that we installed.
 const mysql = require('mysql');
+const fs = require('fs');
 
 // This is express configuration.
 const app = express();
@@ -18,14 +19,23 @@ const connection = mysql.createConnection({
     port: 3306, // DEFAULTS to 3306
     user: 'root', // DEFAULT user (you can configure one in PHPMyAdmin or via CLI)
     password: '', // DEFAULT password is empty... (in production do not allow this........!!!!!!!!!!!!)
+    multipleStatements: true
 });
 
 connection.connect((err) => {
     if(err) throw err;
 
     console.log('Connected to MySQL...');
-});
 
-app.listen(port, () => {
-    console.log(`Listening on port ${port}...`);
+    // Load up the setup.sql commands
+    // Setup and run our Database Schema
+    const buffer = fs.readFileSync('db/setup.sql');
+
+    const contents = buffer.toString();
+
+    connection.query(contents, (error, results, fields) => {
+        if(error) throw error;
+
+        console.log('Database configured and ready...');
+    });
 });
