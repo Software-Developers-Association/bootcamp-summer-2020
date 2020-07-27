@@ -1,0 +1,73 @@
+This is going to serve as a guide to setup TailwindCSS, PostCSS-CLI, and Autoprefixer.
+
+# Installing the modules
+1.) install tailwind
+> npm i tailwindcss
+
+2.) install postcss-cli
+> npm i postcss-cli
+
+3.) install autoprefixer
+> npm i autoprefixer
+
+*NOTE: You can concat all of the installs like This*
+
+> npm i tailwindcss postcss-cli autoprefixer
+
+# We need to iniitalize TailwindCSS
+
+> npx tailwind init
+
+# We need to configure PostCSS
+
+1.) Create a postcss.config.js file at the root of your project.
+
+In the file we need to do some exports on the plugins we are going to use.
+
+2.) Add the following to postcss.config.js
+
+BEGIN:
+module.exports = {
+    plugins: [
+        require('tailwindcss'),
+        require('autoprefixer')
+    ]
+};
+END:
+
+# We need to configure TailwindCSS
+
+1.) Create a folder called 'css'
+2.) Create a file in the 'css' folder called tailwind.css
+
+Folder Structure
+project-name/
+    - css/
+        - tailwind.css
+3.) Add the imports for TailwindCSS in the css/tailwind.css file.
+
+BEGIN:
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+END:
+
+# Create custom scripts to compile our tailwind.css
+
+1.) We need to edit 'package.json' file.
+    Navigate to the 'scripts' section
+    
+    Add the following 4 commands.
+BEGIN:
+    "build:tailwind": "postcss build css/tailwind.css -o src/tailwind.css"    
+    "prestart": "npm run build:tailwind",
+    "prebuild": "npm run build:tailwind",
+    "watch:tailwind": "postcss build css/tailwind.css -o src/tailwind.css --watch"
+END:
+
+# We need to link our generated tailwind.css file to our project.
+
+Add the import statement to index.js to add tailwind.css
+
+index.js
+> import './tailwind.css';
