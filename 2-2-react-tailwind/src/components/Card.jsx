@@ -1,22 +1,63 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import Joi from '@hapi/joi';
+
+const propTypes = {
+    // Required
+    heading: PropTypes.string.isRequired,
+    subheading: PropTypes.string.isRequired,
+
+    // Optional
+    text: PropTypes.string,
+    image: PropTypes.shape(
+        {
+            url: PropTypes.string.isRequired,
+            alt: PropTypes.string.isRequired
+        }
+    ),
+    actions: PropTypes.arrayOf(
+        (array, index) => {
+            const schema = Joi.object({
+                text: Joi.string().required(),
+                callback: Joi.function().optional()
+            });
+
+            const {error} = schema.validate(array[index]);
+
+            if(error) return error;
+        }
+    )
+};
 
 export default function Card(props) {
-    const {text} = props;
+    // Object Destructoring the properties in the props
+    // JSON object.
+    const {heading = "Heading", subheading = "Subheading", text, image, actions} = props;
 
     return (
-        <div className="shadow rounded-md max-w-sm overflow-hidden transform transition ease-out hover:scale-105 duration-300">
-            <img className="h-48 w-full object-cover" src="https://media3.giphy.com/media/WvuTFk2IN7jxoLVDkP/giphy.gif" alt="resort" />
+        <div className="shadow rounded-md max-w-xs overflow-hidden transform transition ease-out hover:scale-105 duration-300">
+            {
+                image && <img className="h-48 w-full object-cover" src={image.url} alt={image.alt} />
+            }
             <div className="px-4 py-4">
-                <h3 className="font-bold text-xl">{props.heading}</h3>
-                <h4 className="text-sm text-gray-500">{props.subheading}</h4>
+                <h3 className="font-bold text-xl">{heading}</h3>
+                <h4 className="text-sm text-gray-500">{subheading}</h4>
                 {
-                    text && <div className="text-sm text-gray-500 mt-3">{text}</div>
+                    text && text !== "" && <div className="text-sm text-gray-500 mt-3">{text}</div>
                 }
-                <div className="mt-3 -ml-2 -mb-2 space-x-1">
-                    <button className="px-2 py-1 hover:bg-purple-100 active:bg-purple-300 focus:bg-purple-200 focus:outline-none text-purple-700 uppercase font-semibold tracking-wider">Action 1</button>
-                    <button className="px-2 py-1 hover:bg-purple-100 active:bg-purple-300 focus:bg-purple-200 focus:outline-none text-purple-700 uppercase font-semibold tracking-wider">Action 2</button>
-                </div>
+                {
+                    actions && actions.length > 0 &&
+                    <div className="mt-3 -ml-2 -mb-2 space-x-1">
+                        {
+                            actions.map((action, index) => {
+                                return <button key={index} onClick={action.callback} className="px-2 py-1 hover:bg-purple-100 active:bg-purple-300 focus:bg-purple-200 focus:outline-none text-purple-700 uppercase font-semibold tracking-wider">{action.text}</button>
+                            })
+                        }
+                    </div>
+                }
             </div>
         </div>
     );
 }
+
+Card.propTypes = propTypes;
