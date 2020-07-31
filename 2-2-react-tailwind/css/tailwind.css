@@ -1,3 +1,60 @@
 @tailwind base;
 @tailwind components;
+
+/**
+    Custom Tailwind classes here...
+*/
+
+.material-button {
+    @apply px-2 py-1 font-semibold uppercase tracking-wider rounded;
+}
+
+.material-button:focus {
+    @apply outline-none;
+}
+
+.material-button-text {
+    @apply bg-transparent text-secondary-dark;
+}
+
+.material-button-text:hover {
+    @apply bg-secondary-100;
+}
+
+.material-button-text:focus {
+    @apply bg-secondary-200;
+}
+
+.material-button-text:active {
+    @apply bg-secondary-300;
+}
+
+.material-button-outline {
+    @apply border border-secondary-dark text-secondary-dark;
+}
+
+.material-button-outline:hover {
+    @apply bg-secondary-100;
+}
+
+.material-button-outline:focus {
+    @apply bg-secondary-200;
+}
+
+.material-button-outline:active {
+    @apply bg-secondary-300;
+}
+
+.material-button-contained {
+    @apply bg-secondary text-secondary-text shadow-md;
+}
+
+.material-button-contained:hover {
+    @apply shadow-lg transition ease-out duration-300 bg-secondary-dark;
+}
+
+.material-button-contained:active {
+    @apply bg-secondary-light;
+}
+
 @tailwind utilities;
