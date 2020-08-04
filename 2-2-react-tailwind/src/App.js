@@ -1,10 +1,10 @@
 import React from 'react';
-import Button from './components/Button';
 import ResortsExample from './components/ResortsExample';
+import InputField from './components/InputField';
 
 function App() {
   return (
-    <ResortsExample />
+    <InputField />
   );
 }
 

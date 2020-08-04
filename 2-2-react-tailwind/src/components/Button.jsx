@@ -3,22 +3,23 @@ import PropTypes from 'prop-types';
 
 const propTypes = {
     text: PropTypes.string.isRequired,
-    buttonStyle: PropTypes.string
+    buttonStyle: PropTypes.string,
+    icon: PropTypes.object
 };
 
 export default function Button(props) {
-    const {buttonStyle = 'text', text, onClick} = props;
+    const {buttonStyle = 'text', text, onClick, icon:Icon } = props;
 
     let style = '';
 
     switch(buttonStyle) {
-        case 'text': {
+        case Button.styles.text: {
             style = 'material-button-text';
         } break;
-        case 'outline': {
+        case Button.styles.outline: {
             style = 'material-button-outline';
         } break;
-        case 'contained': {
+        case Button.styles.contained: {
             style = 'material-button-contained';
         } break;
         default: {
@@ -27,8 +28,18 @@ export default function Button(props) {
     }
 
     return (
-        <button className={`material-button ${style}`} onClick={onClick}>{text}</button>
+        <button className={`flex items-center space-x-2 material-button ${style}`} onClick={onClick}>
+            {
+                Icon && <Icon className="h-5 w-5" />
+            }
+            <span>{text}</span>
+        </button>
     );
 }
 
 Button.propTypes = propTypes;
+Button.styles = {
+    text: "text",
+    outline: "outline",
+    contained: "contained"
+};

@@ -1,6 +1,38 @@
 @tailwind base;
 @tailwind components;
 
+.material-input-underline {
+    @apply w-full h-1 bg-primary transform scale-x-0 duration-150;
+}
+
+.material-input-label {
+    @apply absolute left-0 top-0 w-full h-full transform origin-top-left translate-y-3 pointer-events-none duration-150;
+}
+
+.material-input {
+    @apply w-full h-full px-2 pt-4 pb-2 rounded-none bg-gray-500 bg-opacity-25 rounded-b-none rounded-t;
+}
+
+.material-input:hover {
+    @apply bg-gray-600 bg-opacity-25;
+}
+
+.material-input:focus {
+    @apply outline-none bg-gray-800 bg-opacity-25;
+}
+
+input.material-input:focus + label.material-input-label {
+    @apply text-primary transform origin-top-left -translate-y-1 scale-75 duration-150;
+}
+
+input.material-input:focus ~ div.material-input-underline {
+    @apply transform origin-center scale-x-100 duration-150;
+}
+
+input.material-input:valid + label.material-input-label {
+    @apply transform origin-top-left -translate-y-1 scale-75 duration-150;
+}
+
 /**
     Custom Tailwind classes here...
 */

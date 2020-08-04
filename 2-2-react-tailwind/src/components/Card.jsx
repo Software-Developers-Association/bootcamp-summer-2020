@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Joi from '@hapi/joi';
 import Button from './Button';
+import {ReactComponent as Star} from '../assets/icon-star.svg';
 
 const propTypes = {
     // Required
@@ -51,7 +52,7 @@ export default function Card(props) {
                     <div className="mt-3 -ml-2 -mb-2 space-x-1">
                         {
                             actions.map((action, index) => {
-                                return <Button key={index} onClick={action.callback} buttonStyle="outline" text={action.text} />
+                                return <Button key={index} onClick={action.callback} buttonStyle={Button.styles.contained} text={action.text} icon={Star} />
                                 //return <button key={index} onClick={action.callback} className="material-button">{action.text}</button>
                             })
                         }
