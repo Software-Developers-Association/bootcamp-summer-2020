@@ -605,12 +605,83 @@ video {
   }
 }
 
-.material-input-underline {
-  width: 100%;
-  height: 0.25rem;
+/* Material TextField */
+
+.material-input-container {
+  position: relative;
+  display: inline-block;
+  height: 3rem;
+}
+
+.material-input-icon {
+  top: 50%; /* Moves the element 50% from the top i.e. the parent container */
+  transform: translateY(-50%); /* Move the element based on 50% of it's height */
+  position: absolute;
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+.material-input-icon-start {
+  left: 0;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+}
+
+.material-input-icon-end {
+  right: 0;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.material-input {
   --bg-opacity: 1;
-  background-color: #0d47a1;
-  background-color: rgba(13, 71, 161, var(--bg-opacity));
+  background-color: #edf2f7;
+  background-color: rgba(237, 242, 247, var(--bg-opacity));
+  width: 100%;
+  height: 100%;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.5rem;
+  border-bottom-width: 1px;
+  --border-opacity: 1;
+  border-color: #000;
+  border-color: rgba(0, 0, 0, var(--border-opacity));
+}
+
+.material-input-with-icon-start .material-input {
+  padding-left: 2.5rem;
+}
+
+.material-input-with-icon-end .material-input {
+  padding-right: 2.5rem;
+}
+
+.material-input:hover {
+  --bg-opacity: 1;
+  background-color: #e2e8f0;
+  background-color: rgba(226, 232, 240, var(--bg-opacity));
+}
+
+.material-input:focus {
+  outline: 0;
+  --bg-opacity: 1;
+  background-color: #cbd5e0;
+  background-color: rgba(203, 213, 224, var(--bg-opacity));
+}
+
+.material-input-label-inner {
+  transform-origin: top left;
+  transition-duration: 150ms;
+}
+
+.material-input:focus + .material-input-label .material-input-label-inner {
+  --text-opacity: 1;
+  color: #805ad5;
+  color: rgba(128, 90, 213, var(--text-opacity));
   --transform-translate-x: 0;
   --transform-translate-y: 0;
   --transform-rotate: 0;
@@ -619,7 +690,24 @@ video {
   --transform-scale-x: 1;
   --transform-scale-y: 1;
   transform: translateX(var(--transform-translate-x)) translateY(var(--transform-translate-y)) rotate(var(--transform-rotate)) skewX(var(--transform-skew-x)) skewY(var(--transform-skew-y)) scaleX(var(--transform-scale-x)) scaleY(var(--transform-scale-y));
-  --transform-scale-x: 0;
+  --transform-translate-y: -0.75rem;
+  --transform-scale-x: .75;
+  --transform-scale-y: .75;
+  transition-duration: 150ms;
+}
+
+.material-input:valid + .material-input-label .material-input-label-inner {
+  --transform-translate-x: 0;
+  --transform-translate-y: 0;
+  --transform-rotate: 0;
+  --transform-skew-x: 0;
+  --transform-skew-y: 0;
+  --transform-scale-x: 1;
+  --transform-scale-y: 1;
+  transform: translateX(var(--transform-translate-x)) translateY(var(--transform-translate-y)) rotate(var(--transform-rotate)) skewX(var(--transform-skew-x)) skewY(var(--transform-skew-y)) scaleX(var(--transform-scale-x)) scaleY(var(--transform-scale-y));
+  --transform-translate-y: -0.75rem;
+  --transform-scale-x: .75;
+  --transform-scale-y: .75;
   transition-duration: 150ms;
 }
 
@@ -629,57 +717,29 @@ video {
   top: 0;
   width: 100%;
   height: 100%;
-  --transform-translate-x: 0;
-  --transform-translate-y: 0;
-  --transform-rotate: 0;
-  --transform-skew-x: 0;
-  --transform-skew-y: 0;
-  --transform-scale-x: 1;
-  --transform-scale-y: 1;
-  transform: translateX(var(--transform-translate-x)) translateY(var(--transform-translate-y)) rotate(var(--transform-rotate)) skewX(var(--transform-skew-x)) skewY(var(--transform-skew-y)) scaleX(var(--transform-scale-x)) scaleY(var(--transform-scale-y));
-  transform-origin: top left;
-  --transform-translate-y: 0.75rem;
+  display: flex;
+  align-items: center;
   pointer-events: none;
-  transition-duration: 150ms;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
 }
 
-.material-input {
+.material-input-with-icon-start .material-input-label {
+  padding-left: 2.5rem;
+}
+
+.material-input-with-icon-end .material-input-label {
+  padding-right: 2.5rem;
+}
+
+.material-input-border {
+  height: 2px;
+  position: absolute;
   width: 100%;
-  height: 100%;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  padding-top: 1rem;
-  padding-bottom: 0.5rem;
-  border-radius: 0;
+  bottom: 0;
   --bg-opacity: 1;
-  background-color: #a0aec0;
-  background-color: rgba(160, 174, 192, var(--bg-opacity));
-  --bg-opacity: 0.25;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0.25rem;
-  border-top-right-radius: 0.25rem;
-}
-
-.material-input:hover {
-  --bg-opacity: 1;
-  background-color: #718096;
-  background-color: rgba(113, 128, 150, var(--bg-opacity));
-  --bg-opacity: 0.25;
-}
-
-.material-input:focus {
-  outline: 0;
-  --bg-opacity: 1;
-  background-color: #2d3748;
-  background-color: rgba(45, 55, 72, var(--bg-opacity));
-  --bg-opacity: 0.25;
-}
-
-input.material-input:focus + label.material-input-label {
-  --text-opacity: 1;
-  color: #0d47a1;
-  color: rgba(13, 71, 161, var(--text-opacity));
+  background-color: #9f7aea;
+  background-color: rgba(159, 122, 234, var(--bg-opacity));
   --transform-translate-x: 0;
   --transform-translate-y: 0;
   --transform-rotate: 0;
@@ -688,14 +748,12 @@ input.material-input:focus + label.material-input-label {
   --transform-scale-x: 1;
   --transform-scale-y: 1;
   transform: translateX(var(--transform-translate-x)) translateY(var(--transform-translate-y)) rotate(var(--transform-rotate)) skewX(var(--transform-skew-x)) skewY(var(--transform-skew-y)) scaleX(var(--transform-scale-x)) scaleY(var(--transform-scale-y));
-  transform-origin: top left;
-  --transform-translate-y: -0.25rem;
-  --transform-scale-x: .75;
-  --transform-scale-y: .75;
+  --transform-scale-x: 0;
+  opacity: 0;
   transition-duration: 150ms;
 }
 
-input.material-input:focus ~ div.material-input-underline {
+.material-input:focus ~ .material-input-border {
   --transform-translate-x: 0;
   --transform-translate-y: 0;
   --transform-rotate: 0;
@@ -704,24 +762,8 @@ input.material-input:focus ~ div.material-input-underline {
   --transform-scale-x: 1;
   --transform-scale-y: 1;
   transform: translateX(var(--transform-translate-x)) translateY(var(--transform-translate-y)) rotate(var(--transform-rotate)) skewX(var(--transform-skew-x)) skewY(var(--transform-skew-y)) scaleX(var(--transform-scale-x)) scaleY(var(--transform-scale-y));
-  transform-origin: center;
   --transform-scale-x: 1;
-  transition-duration: 150ms;
-}
-
-input.material-input:valid + label.material-input-label {
-  --transform-translate-x: 0;
-  --transform-translate-y: 0;
-  --transform-rotate: 0;
-  --transform-skew-x: 0;
-  --transform-skew-y: 0;
-  --transform-scale-x: 1;
-  --transform-scale-y: 1;
-  transform: translateX(var(--transform-translate-x)) translateY(var(--transform-translate-y)) rotate(var(--transform-rotate)) skewX(var(--transform-skew-x)) skewY(var(--transform-skew-y)) scaleX(var(--transform-scale-x)) scaleY(var(--transform-scale-y));
-  transform-origin: top left;
-  --transform-translate-y: -0.25rem;
-  --transform-scale-x: .75;
-  --transform-scale-y: .75;
+  opacity: 1;
   transition-duration: 150ms;
 }
 
