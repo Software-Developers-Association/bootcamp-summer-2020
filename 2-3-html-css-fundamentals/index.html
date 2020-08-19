@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Html/CSS Back to Basics</title>
+
+    <style>
+        /*
+            CSS comment
+        */
+
+        div {
+            background-color: gray;
+            overflow: hidden;
+        }
+
+        /* CSS Selector */
+
+        /* Space */
+        /* PARENT_TAG/CLASS/MIXED CHILD_TAG/CLASS/MIXED */
+        div p {
+            background-color: blue;
+        }
+
+        /* , */
+        div, p {
+            color: white;
+        }
+        
+        /* . */
+        /* Use the . (dot) operator to make sure those classes exists
+        in the HTML element class attribute to apply a customs style to it.*/
+        .button-style {
+            background-color: transparent;
+            color: black;
+            border: none;
+        }
+
+        .dark.button-style {
+            background-color: black;
+            color: white;
+        }
+
+        .light.button-style {
+            background-color: gray;
+            color: white;
+        }
+
+        /* pseudo classes */
+        /*
+            link, visitied, hover, active, focus
+        */
+        div:hover {
+            background-color: red;
+        }
+
+        div:active {
+            background-color: aqua;
+        }
+
+        a:link {
+            color: brown;
+        }
+
+        a:visited {
+            color: aqua;
+        }
+    </style>
+</head>
+<body>
+    <!-- This is an HTML comment -->
+
+    <!-- This div tag is a parent because -->
+    <!-- it has 2 children -->
+    <div>
+        Parent
+        <!-- This div v is a child of the parent div -->
+        <p>
+            Child 1
+        </p>
+        <!-- This div v is a child of the parent div -->
+        <p>
+            Child 2
+        </p>
+        <!-- The 2 divs ^ are siblings -->
+    </div>
+    <br />
+    <header>
+        <nav>
+            <div>
+                <p>
+                    Some text
+                </p>
+            </div>
+        </nav>
+    </header>
+    <br />
+    <button class="button-style dark">Dark Mode Button</button>
+    <button class="button-style dark">Light Mode Button</button>
+    <button>Some button</button>
+
+    <a href="https://images.google.com">Link 1</a>
+</body>
+</html>

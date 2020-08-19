@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transform - CSS</title>
+
+    <style>
+        /* CSS Goes here... */
+
+        /* Resets padding and margins on ALL html elements. */
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        img {
+            background-color: transparent;
+            transition-duration: 100ms;
+        }
+
+        img:hover {
+            transform: scale(1.1) rotate(45deg);
+            transition-duration: 100ms;
+        }
+
+        img:active {
+            transform: scale(0.9);
+            transition-duration: 100ms;
+        }
+
+        .ping-pong {
+            animation-name: ping-pong;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+            animation-timing-function: ease-in-out;
+        }
+
+        .color-anim {
+            animation-name: suspend;
+            animation-duration: 5s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+            animation-timing-function: ease-in-out;
+        }
+
+        @keyframes ping-pong {
+            from {
+                transform: translate(0px, 0px);
+            }
+
+            to {
+                transform: translate(0px, 5px);
+            }
+        }
+
+        @keyframes colors {
+            /* At the start/right off the bat... */
+            0% {
+                background-color: transparent;
+            }
+
+            10% {
+                background-color: red;
+            }
+
+            70% {
+                background-color: blue;
+            }
+
+            100% {
+                background-color: blue;
+            }
+        }
+
+        @keyframes suspend {
+            0% {
+                transform: translate(0px, 0px);
+            }
+
+            50% {
+                transform: translate(0px, 5px);
+            }
+
+            75% {
+                transform: translate(0px, 3px);
+            }
+
+            90% {
+                transform: translate(0px, 5px);
+            }
+
+            100% {
+                transform: translate(0px, 0px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <img class="color-anim" height="50" src="https://img.pngio.com/filecartoon-robotsvg-wikipedia-cartoon-robot-png-508_599.png" alt="robot" />
+</body>
+</html>

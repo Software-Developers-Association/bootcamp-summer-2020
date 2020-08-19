@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .anim-jitter {
+            animation-name: jitter;
+            animation-duration: 500ms;
+            animation-timing-function: ease-in-out;
+        }
+
+        @keyframes jitter {
+            0% {
+                transform: scale(1);
+            }
+
+            75% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <input id="fname" placeholder="Enter your name" />
+    <button id="submit" class="button primary">Submit</button>
+
+    <script>
+        const submit = document.getElementById("submit");
+
+        submit.addEventListener('click', (ev) => {
+            const fname = document.getElementById("fname");
+
+            if(fname.value === "") {
+                fname.className = "anim-jitter";
+
+                setTimeout(() => {
+                    fname.className = "";
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>

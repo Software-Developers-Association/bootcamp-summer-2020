@@ -150,12 +150,12 @@ function createTableLikes() {
  const app = express();
  // Import Joi for JSON body validation.
  const Joi = require('joi');
-
+ const cors = require('cors');
  const url = require('url');
 
  // Configure the port for the Node.js express server
  // to listen on...
- const port = process.env.PORT || 3000;
+ const port = process.env.PORT || 9000;
  const multer = require('multer');
  const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -168,6 +168,8 @@ function createTableLikes() {
  const upload = multer({
      storage: storage
  });
+
+ app.use(cors());
 
  // Ensure JSON will be parsed for the
  // req body. To do this, we will use some
@@ -186,6 +188,48 @@ function createTableLikes() {
              message: 'Hello, World!'
          }
      );
+ });
+
+ app.post('/auth', (req, res) => {
+     const schema = {
+         username: Joi.string().required(),
+         password: Joi.string().required()
+     };
+
+     const {error} = Joi.validate(req.body, schema);
+
+     if(error) {
+         const result = {
+             message: error.message,
+             code: res.statusCode = 400
+         }
+
+         return res.json(result);
+     }
+
+     const sql = `SELECT user_id, fname, lname, username FROM users WHERE username='${req.body.username}' AND password='${req.body.password}'`;
+
+     connection.query(sql, (error, rows, fields) => {
+         if(error) return res.json(
+            {
+                message: err.message,
+                code: res.statusCode = 500
+            }
+        );
+
+        if(rows.length === 0) {
+            return res.json({
+                message: 'Invalid username & password.',
+                code: res.statusCode = 400
+            })
+        }
+
+        return res.json({
+            message: 'OK',
+            code: res.statusCode = 200,
+            user: rows[0]
+        });
+     });
  });
 
  app.post('/users', (req, res) => {
