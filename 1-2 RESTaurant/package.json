@@ -4,7 +4,7 @@
   "description": "This is a project to learn about backend development utilizing RESTful methodologies.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon app.js"
   },
   "author": "",
   "license": "MIT",
@@ -14,5 +14,8 @@
     "joi": "^14.3.1",
     "multer": "^1.4.2",
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
